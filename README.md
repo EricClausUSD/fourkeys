@@ -1,3 +1,16 @@
+# Lab 5.1
+The Four Keys project provides a practical model for measuring DORA release metrics within the NAD Software Factory. Instead of relying on manual reporting or anecdotal impressions, a Four Keys-style approach would automatically collect delivery data from systems already used to build, deploy, monitor, and support applications. For NAD, the primary data sources would likely include GitLab repositories, GitLab CI/CD pipelines, deployment jobs, monitoring alerts, incident tickets, and operational logs. This would allow the Software Factory to measure Deployment Frequency, Lead Time for Changes, Change Failure Rate, and Time to Restore Service consistently.
+
+A potential NAD implementation could begin with GitLab webhooks. Commit, merge request, pipeline, deployment, and release events could be sent to an internal event collector hosted in NADcloud. Those raw events could be stored in an internal PostgreSQL database, analytics database, or log platform. A scheduled transformation process would classify events into the core Four Keys categories: changes, deployments, and incidents. GitLab commits and merge requests would feed the changes table, successful production pipeline jobs would feed the deployments table, and monitoring alerts or helpdesk tickets tagged as production failures would feed the incidents table.
+
+Prometheus, Splunk, and Grafana could support this architecture in different ways. Prometheus could collect application and infrastructure health metrics, such as availability, latency, error rates, container restarts, VM utilization, and failed health checks. Splunk could aggregate logs and operational events from applications, GitLab runners, servers, firewalls, Plesk, Kubernetes, and other infrastructure components. Grafana could serve as the dashboard layer, showing both DORA release metrics and operational health metrics for development teams, NADcloud operations, and leadership.
+
+With this model, Deployment Frequency would come from successful production deployment events. Lead Time for Changes would compare the original commit or merge timestamp to the production deployment timestamp. Change Failure Rate would link deployments to incidents, rollbacks, hotfixes, failed health checks, or production alerts. Time to Restore Service would be calculated from incident start and resolution timestamps. These dashboards would help show whether Software Factory capabilities such as shared CI/CD templates, automated testing, standardized deployment patterns, and NADcloud hosting are improving speed, release quality, and operational resilience.
+
+The most important requirement would be consistent definitions. NAD would need to define what counts as a production deployment, a failed change, an incident, and restored service. Used properly, the Four Keys model would not be a blame tool, but a continuous improvement tool for identifying bottlenecks such as slow reviews, manual approvals, weak testing, missing rollback plans, or poor monitoring.
+
+# Rest of README
+
 > This repository is not currently maintained. We encourage you to explore it, fork it, or otherwise use it as inspiration for your own metrics instrumentation.
 
 ![Four Keys](images/fourkeys_wide.svg)
